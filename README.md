@@ -1,2 +1,2 @@
-# github-auth-transport
-A http.RoundTripper implementation for GitHub authentication
+# GitHub Authentication HTTP Transport [![Go Reference](https://pkg.go.dev/badge/github.com/bored-engineer/github-auth-http-transport.svg)](https://pkg.go.dev/github.com/bored-engineer/github-auth-http-transport)
+A Golang [http.RoundTripper](https://pkg.go.dev/net/http#RoundTripper) for injecting [GitHub authentication headers](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28) to GitHub's REST API.
