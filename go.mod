@@ -1,14 +1,11 @@
-module github.com/bored-engineer/github-auth-transport
+module github.com/bored-engineer/github-auth-http-transport
 
-go 1.22.2
-
-require (
-	github.com/bradleyfalzon/ghinstallation/v2 v2.11.0
-	golang.org/x/oauth2 v0.21.0
-)
+go 1.24.2
 
 require (
-	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
-	github.com/google/go-github/v62 v62.0.0 // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/bored-engineer/basicauth v0.0.0-20250414045855-277352454817
+	github.com/jdx/go-netrc v1.0.0
+	golang.org/x/oauth2 v0.29.0
 )
+
+require github.com/int128/oauth2-github-app v1.1.2

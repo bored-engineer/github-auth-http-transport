@@ -1,0 +1,50 @@
+package ghauth
+
+import (
+	"context"
+	"fmt"
+	"os"
+
+	oauth2githubapp "github.com/int128/oauth2-github-app"
+	"golang.org/x/oauth2"
+)
+
+// App returns a oauth2.TokenSource for a given GitHub App installation.
+// If appID is empty, it will look for the GH_APP_ID environment variable.
+// If installationID is empty, it will look for the GH_APP_INSTALLATION_ID environment variable.
+// If privateKeyPath is empty, it will look for the GH_APP_PRIVATE_KEY environment variable.
+func App(
+	ctx context.Context,
+	appID string,
+	installationID string,
+	privateKeyPath string,
+) (oauth2.TokenSource, error) {
+	if appID == "" {
+		appID = os.Getenv("GH_APP_ID")
+		if appID == "" {
+			return nil, fmt.Errorf("GH_APP_ID is not set")
+		}
+	}
+	if installationID == "" {
+		installationID = os.Getenv("GH_APP_INSTALLATION_ID")
+		if installationID == "" {
+			return nil, fmt.Errorf("GH_APP_INSTALLATION_ID is not set")
+		}
+	}
+	if privateKeyPath == "" {
+		privateKeyPath = os.Getenv("GH_APP_PRIVATE_KEY")
+		if privateKeyPath == "" {
+			return nil, fmt.Errorf("GH_APP_PRIVATE_KEY is not set")
+		}
+	}
+	privateKey, err := oauth2githubapp.LoadPrivateKey(privateKeyPath)
+	if err != nil {
+		return nil, fmt.Errorf("oauth2githubapp.LoadPrivateKey failed: %w", err)
+	}
+	cfg := oauth2githubapp.Config{
+		PrivateKey:     privateKey,
+		AppID:          appID,
+		InstallationID: installationID,
+	}
+	return cfg.TokenSource(ctx), nil
+}
