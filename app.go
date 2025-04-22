@@ -46,5 +46,8 @@ func App(
 		AppID:          appID,
 		InstallationID: installationID,
 	}
+	if host := Host(); host != "github.com" {
+		cfg.BaseURL = "https://" + host + "/api/v3/"
+	}
 	return cfg.TokenSource(ctx), nil
 }

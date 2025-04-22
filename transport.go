@@ -32,7 +32,7 @@ func Transport(ctx context.Context, base http.RoundTripper) (http.RoundTripper, 
 		}, nil
 	}
 
-	basicauth, err3 := OAuth(base, "", "")
+	basicauth, err3 := Basic(base, "", "")
 	if err3 == nil {
 		return basicauth, nil
 	}

@@ -8,10 +8,10 @@ import (
 	"github.com/bored-engineer/basicauth"
 )
 
-// OAuth returns a basicauth.Transport using a Github OAuth App's client ID and client secret.
+// Basic returns a basicauth.Transport using a Github OAuth App's client ID and client secret.
 // If clientID is empty, it will look for the GH_CLIENT_ID environment variable.
 // If clientSecret is empty, it will look for the GH_CLIENT_SECRET environment variable.
-func OAuth(
+func Basic(
 	base http.RoundTripper,
 	clientID string,
 	clientSecret string,
