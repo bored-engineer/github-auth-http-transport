@@ -2,8 +2,10 @@ package ghauth
 
 import (
 	"context"
+	"crypto/rsa"
 	"fmt"
 	"os"
+	"strings"
 
 	oauth2githubapp "github.com/int128/oauth2-github-app"
 	"golang.org/x/oauth2"
@@ -37,9 +39,21 @@ func App(
 			return nil, fmt.Errorf("GH_APP_PRIVATE_KEY is not set")
 		}
 	}
-	privateKey, err := oauth2githubapp.LoadPrivateKey(privateKeyPath)
-	if err != nil {
-		return nil, fmt.Errorf("oauth2githubapp.LoadPrivateKey failed: %w", err)
+	var privateKey *rsa.PrivateKey
+	if strings.Contains(privateKeyPath, "-BEGIN RSA PRIVATE KEY-") {
+		// If privateKeyPath contains the private key directly, parse it.
+		var err error
+		privateKey, err = oauth2githubapp.ParsePrivateKey([]byte(privateKeyPath))
+		if err != nil {
+			return nil, fmt.Errorf("oauth2githubapp.ParsePrivateKey failed: %w", err)
+		}
+	} else {
+		// Otherwise, read the private key from the file.
+		var err error
+		privateKey, err = oauth2githubapp.LoadPrivateKey(privateKeyPath)
+		if err != nil {
+			return nil, fmt.Errorf("oauth2githubapp.LoadPrivateKey failed: %w", err)
+		}
 	}
 	cfg := oauth2githubapp.Config{
 		PrivateKey:     privateKey,
